@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>AngularJS Demo</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,400;1,100&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
+    <script src="./app.js"></script>
+    <script src="./productFactory.js"></script>
+    <script src="./addController.js"></script>
+
+    <style>
+      body {
+        font-family: "Poppins";
+      }
+
+      a {
+        cursor: pointer;
+      }
+
+      ion-icon {
+        font-size: 2rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body ng-app="crudApp" ng-controller="addController">
+    <header>
+      <h1 class="bg-dark text-light text-center rounded p-3">ANGULARJS CRUD</h1>
+    </header>
+
+    <main>
+      <section class="mt-5 mb-5 container  w-50">
+        <h2 class="mb-5 text-center text-primary p-3">Add a new product</h2>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter the Product Name"
+            ng-model="name"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter the Product Price"
+            ng-model="price"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter the Product Description"
+            ng-model="desc"
+          />
+        </div>
+        <div class="form-group">
+          <select name="" id="" class="form-control" ng-model="category">
+            <option>Choose Category</option>
+            <option value="mens">Mens</option>
+            <option value="womens">Womens</option>
+            <option value="childrens">Childrens</option>
+            <option value="electronics">Electronics</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button
+            class="btn btn-primary mr-3 w-25"
+            ng-click="add()"
+            ng-show="!isEdit"
+          >
+            Add
+          </button>
+          <button
+            class="btn btn-success mr-3 w-25"
+            ng-click="updateProduct()"
+            ng-show="isEdit"
+          >
+            Update
+          </button>
+          <button class="btn btn-info w-25" ng-click="clearAll()">Reset</button>
+        </div>
+      </section>
+
+      <section class="mt-5 mb-5 container ">
+        <h2 class="text-center mb-5">Product List</h2>
+
+        <h4
+          ng-show="products.length==0"
+          class=" rounded p-2 text-center alert-info"
+        >
+          No items in the List.
+        </h4>
+
+        <div ng-show="products.length>0">
+          <div class="row mb-4">
+            <div class="col">
+              <button class="btn btn-success w-100" ng-click="showAll()">
+                SHOW ALL
+              </button>
+            </div>
+            <div class="col">
+              <button class="btn btn-primary w-100" ng-click="sortByName()">
+                SORT BY NAME
+              </button>
+            </div>
+            <div class="col">
+              <button class="btn btn-warning w-100" ng-click="filterStarred()">
+                STARRED
+              </button>
+            </div>
+            <div class="col">
+              <button class="btn btn-secondary w-100" ng-click="sortById()">
+                SORT BY ID
+              </button>
+            </div>
+          </div>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Category</th>
+                <th scope="col">Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="product in temp">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name | uppercase }}</td>
+                <td>{{ product.price | currency }}</td>
+                <td>{{ product.desc }}</td>
+                <td>{{ product.category | uppercase }}</td>
+                <td>
+                  <ion-icon
+                    name="create"
+                    class="mr-3 text-secondary"
+                    ng-click="editProduct(product.id)"
+                  ></ion-icon>
+                  <ion-icon
+                    name="trash"
+                    class="text-danger mr-3"
+                    ng-click="deleteProduct(product.id)"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    ng-click="toggleStarred(product.id)"
+                    ng-show="!product.isStarred"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star"
+                    ng-click="toggleStarred(product.id)"
+                    class="text-warning"
+                    ng-show="product.isStarred"
+                  ></ion-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
